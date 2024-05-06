@@ -6,7 +6,7 @@ import numpy as np
 ok = 0
 
 width, height = 80, 145
-with open('appl/CarParkPos', 'rb') as f:
+with open('CNN-Tensorflow-Parking/appl/CarParkPos', 'rb') as f:
     posList = pickle.load(f)
 
 def checkParkingSpace():
@@ -15,7 +15,7 @@ def checkParkingSpace():
         x,y = pos
         imgCrop = img[y:y+height,x:x+width]
         resize = cv2.resize(imgCrop,(256,256))
-        filename = f'appl/asset/resized_livephotoes/{i}.jpg'
+        filename = f'CNN-Tensorflow-Parking/appl/asset/resized_livephotoes/{i}.jpg'
         cv2.imwrite(filename, resize)
         cv2.imshow(str(i),resize)
         i=i+1
@@ -28,7 +28,7 @@ def runfilter():
         
 def showparking():
     i = 0
-    with open('appl/asset/predict_txt/predictions.txt', 'r') as f:  
+    with open('CNN-Tensorflow-Parking/appl/asset/predict_txt/predictions.txt', 'r') as f:  
         lines = f.readlines()  # Citeste liniile din fișier
 
     for pos in posList:
@@ -46,7 +46,7 @@ def showparking():
 
 running = True
 while running:
-    img = cv2.imread('appl/asset/parking_lot/parking.jpg')
+    img = cv2.imread('CNN-Tensorflow-Parking/appl/asset/parking_lot/parking.jpg')
     
     checkParkingSpace()
     #runfilter()

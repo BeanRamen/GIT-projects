@@ -4,7 +4,7 @@ import pickle
 width, height = 80, 145
 
 try:
-    with open('appl/CarParkPos', 'rb') as f:
+    with open('CNN-Tensorflow-Parking/appl/CarParkPos', 'rb') as f:
         posList = pickle.load(f)
 except:
     posList = []
@@ -17,12 +17,12 @@ def mouseClick(events, x, y, flags, params):
             x1, y1 = pos
             if x1 < x < x1 + width and y1 < y < y1 + height:
                 posList.pop(i)
-    with open('appl/CarParkPos', 'wb') as f:
+    with open('CNN-Tensorflow-Parking/appl/CarParkPos', 'wb') as f:
         pickle.dump(posList, f)
 
 running = True
 while running:
-    img = cv2.imread('appl/asset/parking_lot/parking.jpg')
+    img = cv2.imread('CNN-Tensorflow-Parking/appl/asset/parking_lot/parking.jpg')
     for pos in posList:
         cv2.rectangle(img, pos, (pos[0] + width, pos[1] + height), (255, 0, 255), 2)
 
