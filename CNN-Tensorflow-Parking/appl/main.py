@@ -4,10 +4,10 @@ import pickle
 import cvzone
 import numpy as np
 ok = 0
+park_i=1
 
 width, height = 80, 145
-with open('CNN-Tensorflow-Parking/appl/CarParkPos', 'rb') as f:
-    posList = pickle.load(f)
+
 
 def checkParkingSpace():
     i=0
@@ -15,7 +15,7 @@ def checkParkingSpace():
         x,y = pos
         imgCrop = img[y:y+height,x:x+width]
         resize = cv2.resize(imgCrop,(256,256))
-        filename = f'CNN-Tensorflow-Parking/appl/asset/resized_livephotoes/{i}.jpg'
+        filename = f'CNN-Tensorflow-Parking/appl/asset/resized_livephotoes/parking_spot_{park_i}/{i}.jpg'
         cv2.imwrite(filename, resize)
         cv2.imshow(str(i),resize)
         i=i+1
@@ -28,7 +28,7 @@ def runfilter():
         
 def showparking():
     i = 0
-    with open('CNN-Tensorflow-Parking/appl/asset/predict_txt/predictions.txt', 'r') as f:  
+    with open(f'CNN-Tensorflow-Parking/appl/asset/predict_txt/predictions_parking_{park_i}.txt', 'r') as f:  
         lines = f.readlines()  # Citeste liniile din fișier
 
     for pos in posList:
@@ -45,8 +45,12 @@ def showparking():
 
 
 running = True
+
 while running:
-    img = cv2.imread('CNN-Tensorflow-Parking/appl/asset/parking_lot/parking.jpg')
+    with open(f'CNN-Tensorflow-Parking/appl/asset/position/CarParkPos_{park_i}', 'rb') as f:
+        posList = pickle.load(f)
+        
+    img = cv2.imread(f'CNN-Tensorflow-Parking/appl/asset/parking_lot/parking_{park_i}.jpg')
     
     checkParkingSpace()
     #runfilter()
@@ -55,6 +59,11 @@ while running:
     
     
     key = cv2.waitKey(1) & 0xFF
+    if key == 13:
+        park_i = park_i+1
+        if park_i > 1:
+            width, height = 125, 145
+        
     if key == 27:  # Dacă tasta apăsată este 'ESC'
         running = False
 cv2.destroyAllWindows()
